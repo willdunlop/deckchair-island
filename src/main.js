@@ -175,8 +175,6 @@
         water.geometry.computeFaceNormals();	
         water.geometry.normalsNeedUpdate = true;  
         water.geometry.verticesNeedUpdate = true;
-        water.geometry.__dirtyVertices = true;
-        water.geometry.dynamic = true;
 
     }
     
