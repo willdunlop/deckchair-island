@@ -8,10 +8,10 @@
  * 2. Apply vertex wave manipulation        -   DONE!!
  * 3. Slip it into the existing project     -   ¯\_(´⊙︿⊙`)_/¯
  */
-// import THREE from 'three';
 
- var container, 
-    stats,
+ import Boat from './assets/objects/boat.js';
+
+ let container, 
     camera, 
     scene, 
     renderer, 
@@ -22,16 +22,16 @@
     count,
     sphere;
 
-    var width = window.innerWidth;
-    var height = window.innerHeight;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
 
-    var AMOUNTX = 50, AMOUNTY = 50;
+    const AMOUNTX = 50, AMOUNTY = 50;
 
-    var lightColor = 0xffdddd;
-    var waterColor = 0x233c3e;  //  0x001e0f
+    const lightColor = 0xffdddd;
+    const waterColor = 0x233c3e;  //  0x001e0f
 
     init();
-    animate(0);
+    animate();
 
     function init() {
         /** Create and add renderer to the HTML */
@@ -53,14 +53,14 @@
         light = new THREE.DirectionalLight(lightColor, 0.8);
 
         /** Water Geo and shader */
-        var waterGeometry = new THREE.PlaneGeometry(10000, 10000, AMOUNTX, AMOUNTY);
+        const waterGeometry = new THREE.PlaneGeometry(10000, 10000, AMOUNTX, AMOUNTY);
         const waterNormalMap = new THREE.TextureLoader().load(
             'assets/img/water-norms3.png',
             function(texture) { 
                 texture.wrapS = texture.wrapT = THREE.RepeatWrapping; 
             }
         );    
-        var waterOptions = {
+        const waterOptions = {
             textureWidth: 512,
             textureHeight: 512,
             waterNormals: waterNormalMap,
@@ -83,24 +83,26 @@
 
 
         /** Sky */
-        var sky = new THREE.Sky();
+        const sky = new THREE.Sky();
         sky.scale.setScalar(10000);
 
-        var uniforms = sky.material.uniforms;
+        console.log("S K Y", sky)
+        sky.fog = true;
+        const uniforms = sky.material.uniforms;
         uniforms.turbidity.value = 4.3;
         uniforms.rayleigh.value = 2.75;
         uniforms.luminance.value = 0.85;
         uniforms.mieCoefficient.value = 0.005;
         uniforms.mieDirectionalG.value = 0.85;
 
-        var parameters = {
+        const parameters = {
             distance: 400,
-            inclination: 0.47,
+            inclination: 0.2,
             azimuth: 0.205
         };
 
         /** I have no idea what this shit does */
-        var cubeCamera = new THREE.CubeCamera(1, 2000, 256);
+        const cubeCamera = new THREE.CubeCamera(1, 2000, 256);
         cubeCamera.renderTarget.texture.minFilter = THREE.LinearMipMapLinearFilter;
 
         /**
@@ -111,8 +113,8 @@
          * WARNING: Contains Maths ¯\_(´⊙︿⊙`)_/¯
          */
         function updateSun() {
-            var theta = Math.PI * (parameters.inclination - 0.5);
-            var phi = 2 * Math.PI * (parameters.azimuth - 0.5);
+            const theta = Math.PI * (parameters.inclination - 0.5);
+            const phi = 2 * Math.PI * (parameters.azimuth - 0.5);
 
             light.position.x = parameters.distance * Math.cos(phi);
             light.position.y = parameters.distance * Math.sin(phi) * Math.sin(theta);
@@ -127,9 +129,6 @@
         updateSun();
 
         /** Controls */
-        // controls = new THREE.PointerLockControls(camera);
-        // controls.enabled = true;
-        // controls = new THREE.FirstPersonControls(camera);
 
         controls = new THREE.OrbitControls( camera, renderer.domElement );
         controls.maxPolarAngle = Math.PI * 0.495;
@@ -139,19 +138,17 @@
         controls.maxDistance = 200.0;
         camera.lookAt( controls.target );
 
-        /** Stats */
-
         /** GUI */
 
-        /** Window resize event listener */
-        
         /** Add shit to the scene */
         scene.add(light);
         scene.add(water);
         scene.add(sky);
-        // scene.add(controls.getObject());
-
-
+        console.log("Boat", Boat);
+        console.log("Boat()", Boat());
+        scene.add(Boat());
+        
+        /** Window resize event listener */
         window.addEventListener('resize', onWindowResize, false);
     }
 
@@ -163,14 +160,19 @@
 
     /**
      * @function animateWater()
-     * @param {Number} - A number for doing stuff
+     * @param {Number} - A number for controlling the speed of the waves
      * WARNING: MORE MATHS ᕙ(⇀‸↼‶)ᕗ
      */
-    function animateWater(timestamp) {
-        timestamp /= 1000;
-        for (var i = 0; i < water.geometry.vertices.length; i++) {
-            var vertice = water.geometry.vertices[i];
-            vertice.z = (-20 * Math.sin((timestamp + (vertice.x * 100)))) * 3 + (1 * Math.cos((timestamp + (vertice.y)))) * 50;
+    function animateWater(timestamp = 0) {
+        timestamp /= 750; //    1000 = fairly chill, 100 = excessively fucked, 
+        
+        const seperation = -20;
+        const waveWidth = 100;
+        const waveHeight = 50;
+
+        for (let i = 0; i < water.geometry.vertices.length; i++) {
+            const vertice = water.geometry.vertices[i];
+            vertice.z = (seperation * Math.sin((timestamp + (vertice.x * waveWidth)))) * 3 + (1 * Math.cos((timestamp + (vertice.y)))) * waveHeight;
         }
         water.geometry.computeFaceNormals();	
         water.geometry.normalsNeedUpdate = true;  
@@ -183,7 +185,7 @@
 
         /** RENDERABLES */
         water.material.uniforms.time.value += 1.0 / 60.0;
-        animateWater(timestamp);
+        // animateWater(timestamp);
         /** END RENDERABLES */
 
         renderer.render(scene, camera);

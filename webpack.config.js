@@ -9,12 +9,13 @@ module.exports = {
         publicPath: '/',
         filename: 'main.min.js',
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            title: '𝕀 ℕ 𝔽 𝕀 ℕ 𝕀 ~ 𝕆 ℂ 𝔼 𝔸 ℕ',
-            template: 'src/index.html'
-        })
-    ],
+    // plugins: [
+    //     new HtmlWebpackPlugin({
+    //         title: '𝕀 ℕ 𝔽 𝕀 ℕ 𝕀 ~ 𝕆 ℂ 𝔼 𝔸 ℕ',
+    //         template: 'src/index.template.html',
+    //         inject: 'body',
+    //     })
+    // ],
     module: {
         rules: [{
             exclude: /node_modules/,
