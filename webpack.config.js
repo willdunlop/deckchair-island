@@ -16,6 +16,12 @@ module.exports = {
     //         inject: 'body',
     //     })
     // ],
+    devServer: {
+      contentBase: __dirname + "/build",
+      compress: true,
+      port: 8080,
+      // allowedHosts: ['localhost:8080']
+    },
     module: {
         rules: [{
             exclude: /node_modules/,
