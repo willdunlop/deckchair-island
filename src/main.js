@@ -65,8 +65,8 @@ function init() {
     light = new THREE.DirectionalLight(lightColor, 0.8);
     const lightPosition = light.position.clone().normalize();
 
-    const secondLight = new THREE.DirectionalLight(0xffdddd, 0.75);
-    secondLight.rotation.set(90,90,90);
+    const secondLight = new THREE.DirectionalLight(0xffdddd, 0.4);
+    secondLight.position.set(0,10,100);
 
     /** Water */
     water = Water(lightPosition);
@@ -128,9 +128,9 @@ function init() {
     controls.maxDistance = 200.0;
     camera.lookAt( controls.target );
 
-    cube = new Shape().cube();
-    tetra = new Shape().tetrahedron();
-    octa = new Shape().octahedron();
+    cube = new Shape().cube(constants.cube1.position, constants.cube1.rotation);
+    tetra = new Shape().tetrahedron(constants.tetra1.position, constants.tetra1.rotation);
+    octa = new Shape().octahedron(constants.octa1.position, constants.octa1.rotation);
 
     /** Add shit to the scene */
     scene.add(light);

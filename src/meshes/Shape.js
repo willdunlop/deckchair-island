@@ -1,8 +1,5 @@
-/**
-* geoOptions: {
-*
-* }
-*/
+
+import constants from './../config/constants';
 
 export default class Shape {
   constructor(type, geoOptions, matOptions) {
@@ -31,7 +28,8 @@ export default class Shape {
     }
   }
 
-  cube() {
+  cube(position, rotation) {
+    const { nums } = constants;
     const cube = new THREE.Mesh();
 
     const cubeGeo = new THREE.BoxGeometry(1, 1, 1);
@@ -42,8 +40,8 @@ export default class Shape {
     // cubeLight.position.set(0,30,0);
     // cube.add(cubeLight);
 
-    cube.position.set(-500, 200, -3000);
-    cube.rotation.set(45, 45, 0);
+    cube.position.set(position.x, position.y, position.z);
+    cube.rotation.set(rotation.x, rotation.y, rotation.z);
 
     return cube;
   }
@@ -56,23 +54,24 @@ export default class Shape {
 
   }
 
-  tetrahedron() {
+  tetrahedron(position, rotation) {
     const tetraGeo = new THREE.TetrahedronGeometry(1);
     const tetraMat = this.generateMat();
     const tetra = new THREE.Mesh(tetraGeo, tetraMat);
 
-    tetra.position.set(300, 150, -3000);
-    tetra.rotation.set(45, 45, 45);
+    tetra.position.set(position.x, position.y, position.z);
+    tetra.rotation.set(rotation.x, rotation.y, rotation.z);
 
     return tetra;
   }
 
-  octahedron() {
+  octahedron(position, rotation) {
     const octaGeo = new THREE.OctahedronGeometry(1);
     const octaMat = this.generateMat();
     const octa = new THREE.Mesh(octaGeo, octaMat);
 
-    octa.position.set(-750, 600, -5000);
+    octa.position.set(position.x, position.y, position.z);
+    octa.rotation.set(rotation.x, rotation.y, rotation.z);
 
     return octa;
   }
@@ -86,9 +85,9 @@ export default class Shape {
   }
 
   generateMat() {
-    const colors = [0xffffff, 0xffff00, 0xff00ff, 0xff0000, 0x000000];
+    const colors = [0xffffff, 0xffff00, 0xff00ff, 0xff0000, 0x00ffff, 0x0000ff, 0x000000];
     const mat = new THREE.MeshPhongMaterial({
-      color: colors[this.generateNum(4)],
+      color: colors[this.generateNum(6)],
       reflectivity: parseInt(`0.${this.generateNum(9)}`),
       flatShading: true
     });
