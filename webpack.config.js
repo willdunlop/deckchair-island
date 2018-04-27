@@ -4,6 +4,7 @@ module.exports = {
     entry: [
         './src/main.js'
     ],
+    mode: 'development',
     output: {
         path: __dirname + '/build',
         publicPath: '/',
@@ -18,7 +19,7 @@ module.exports = {
     // ],
     devServer: {
       contentBase: __dirname + "/build",
-      compress: true,
+      compress: false,
       port: 8080,
       // allowedHosts: ['localhost:8080']
     },

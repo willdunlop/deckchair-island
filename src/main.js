@@ -10,11 +10,15 @@
  */
 import constants from './config/constants';
 
-import Boat from './meshes/boat.js';
-import Water from './meshes/water.js';
-import Shape from './meshes/shape';
+import Boat from './meshes/boat';
+import Water from './meshes/Water';
+import Shape from './meshes/Shape';
+import AnimateShape from './animations/AnimateShape';
+
+import Waves from './animations/waves';
 
 let container,
+  stats,
   camera,
   scene,
   renderer,
@@ -23,10 +27,20 @@ let container,
   particles,
   water,
   count,
-  sphere;
+  sphere,
+  cube,
+  tetra,
+  octa;
 
 const { width, height } = constants.screen;
 const { AMOUNTX, AMOUNTY, lightColor, waterColor } = constants;
+
+const wavesOptions = {
+  active: true,
+  seperation: -20,
+  waveWidth: 100,
+  waveHeight: 50
+}
 
 init();
 animate();
@@ -45,11 +59,14 @@ function init() {
 
     /** Camera */
     camera = new THREE.PerspectiveCamera(40, width / height, 1, 10000);
-    camera.position.set(30,150,30);
+    camera.position.set(0,75,0);
 
     /** Light */
     light = new THREE.DirectionalLight(lightColor, 0.8);
     const lightPosition = light.position.clone().normalize();
+
+    const secondLight = new THREE.DirectionalLight(0xffdddd, 0.75);
+    secondLight.rotation.set(90,90,90);
 
     /** Water */
     water = Water(lightPosition);
@@ -70,8 +87,8 @@ function init() {
 
     const parameters = {
         distance: 400,
-        inclination: 0.2,
-        azimuth: 0.205
+        inclination: 0.47,
+        azimuth: 0.250
     };
 
     /** I have no idea what this shit does */
@@ -105,22 +122,25 @@ function init() {
 
     controls = new THREE.OrbitControls( camera, renderer.domElement );
     controls.maxPolarAngle = Math.PI * 0.495;
-    controls.target.set( 30, 150, 0 );
+    controls.target.set( 0, 75, 0 );
     controls.panningMode = THREE.HorizontalPanning;
     controls.minDistance = 40.0;
     controls.maxDistance = 200.0;
     camera.lookAt( controls.target );
 
-
-    var exampleCube = new Shape().cube();
-    console.log(exampleCube);
+    cube = new Shape().cube();
+    tetra = new Shape().tetrahedron();
+    octa = new Shape().octahedron();
 
     /** Add shit to the scene */
     scene.add(light);
+    scene.add(secondLight);
     scene.add(water);
     scene.add(sky);
-    scene.add(Boat());
-    scene.add(exampleCube);
+    // scene.add(Boat());
+
+    stats = new Stats();
+    container.appendChild(stats.dom);
 
     /** Window resize event listener */
     window.addEventListener('resize', onWindowResize, false);
@@ -154,13 +174,35 @@ function animateWater(timestamp = 0) {
 
 }
 
+function shapeAnimationTiming() {
+  window.setTimeout(() => {
+    scene.add(cube);
+    AnimateShape(cube);
+  }, 2000);
+  window.setTimeout(() => {
+    scene.add(tetra);
+    AnimateShape(tetra);
+  }, 6500);
+  window.setTimeout(() => {
+    scene.add(octa);
+    AnimateShape(octa);
+  }, 7500);
+
+}
+
 function animate(timestamp) {
+  setTimeout(() => {
     requestAnimationFrame(animate);
+    render();
+    stats.update();
+  }, 1000/60);
+}
 
-    /** RENDERABLES */
-    water.material.uniforms.time.value += 1.0 / 60.0;
-    // animateWater(timestamp);
-    /** END RENDERABLES */
+function render() {
+  water.material.uniforms.time.value += 1.0 / 60.0;
+  shapeAnimationTiming();
+  // Waves(water, wavesOptions, 0)
+  // animateWater(timestamp);
 
-    renderer.render(scene, camera);
+  renderer.render(scene, camera);
 }
