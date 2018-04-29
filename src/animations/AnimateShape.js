@@ -10,5 +10,5 @@ export default function AnimateShape(shape) {
   shapePosZ = shapePosZ + 3;
   shape.position.setZ(shapePosZ);
   //  Remove Cube from scene
-  if(shapePosZ >= 1) scene.remove(shape);
+  // if(shapePosZ >= 1) scene.remove(shape);
 }

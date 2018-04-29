@@ -30,7 +30,8 @@ let container,
   sphere,
   cube,
   tetra,
-  octa;
+  octa,
+  justBegun;
 
 const { width, height } = constants.screen;
 const { AMOUNTX, AMOUNTY, lightColor, waterColor } = constants;
@@ -66,7 +67,10 @@ function init() {
     const lightPosition = light.position.clone().normalize();
 
     const secondLight = new THREE.DirectionalLight(0xffdddd, 0.4);
-    secondLight.position.set(0,10,100);
+    secondLight.position.set(-50,10,100);
+
+    const thirdLight = new THREE.DirectionalLight(0xffdddd, 0.2);
+    thirdLight.position.set(0,-20,0);
 
     /** Water */
     water = Water(lightPosition);
@@ -121,7 +125,6 @@ function init() {
     /** Controls */
 
     controls = new THREE.OrbitControls( camera, renderer.domElement );
-    controls.maxPolarAngle = Math.PI * 0.495;
     controls.target.set( 0, 75, 0 );
     controls.panningMode = THREE.HorizontalPanning;
     controls.minDistance = 40.0;
@@ -135,12 +138,18 @@ function init() {
     /** Add shit to the scene */
     scene.add(light);
     scene.add(secondLight);
+    scene.add(thirdLight);
     scene.add(water);
     scene.add(sky);
     // scene.add(Boat());
 
     stats = new Stats();
     container.appendChild(stats.dom);
+
+    justBegun = new Audio('assets/songs/just-begun.mp3');
+    console.log("it's just beguuuuun, oh what a feeling", justBegun);
+    document.getElementById("songPlay").onclick = playSong
+
 
     /** Window resize event listener */
     window.addEventListener('resize', onWindowResize, false);
@@ -205,4 +214,9 @@ function render() {
   // animateWater(timestamp);
 
   renderer.render(scene, camera);
+}
+
+function playSong() {
+  console.log("playSong was called");
+  justBegun.play();
 }
