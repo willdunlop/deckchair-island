@@ -21,7 +21,6 @@ module.exports = {
       contentBase: __dirname + "/build",
       compress: false,
       port: 8080,
-      // allowedHosts: ['localhost:8080']
     },
     module: {
         rules: [{

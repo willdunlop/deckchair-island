@@ -50,6 +50,25 @@ const Shape = {
     return octa;
   },
 
+  billboard: () => {
+    const billboard = new THREE.Mesh();
+
+    const billGeo = new THREE.BoxGeometry(6, 4, 1);
+    const billMat = new THREE.MeshPhongMaterial({ color: 0x333333, reflectivity: 1});
+    const billboardBody = new THREE.Mesh(billGeo, billMat)
+    billboardBody.name = "billboardBody";
+    billboard.add(billboardBody);
+
+    const lightGeo = new THREE.BoxGeometry(.5, .5, .5)
+    const lightMat = new THREE.MeshPhongMaterial({ color: 0xffdb3d, emissive: 0xffdb3d});
+    const light = new THREE.Mesh(lightGeo, lightMat);
+    light.name = "light";
+    light.position.set(-2.5, 1.5, 0.5)
+    billboard.add(light);
+
+    return billboard;
+  },
+
   custom: () => {
 
   },

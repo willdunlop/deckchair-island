@@ -34,7 +34,7 @@ let container,
   octa,
   justBegun,
   tween;
-  
+
 
 const { width, height } = constants.screen;
 const { AMOUNTX, AMOUNTY, lightColor, waterColor } = constants;
@@ -78,7 +78,6 @@ function init() {
     /** Water */
     water = Water(lightPosition);
     water.rotation.x = - Math.PI / 2;   // ytho?
-    water.rotation.z = 180
 
     /** Sky */
     const sky = new THREE.Sky();
@@ -131,7 +130,7 @@ function init() {
     controls.target.set( 0, 150, 0 );
     controls.panningMode = THREE.HorizontalPanning;
     controls.minDistance = 40.0;
-    controls.maxDistance = 200.0;
+    controls.maxDistance = 20000.0;
     camera.lookAt( controls.target );
 
     /** Floating shapes */
@@ -145,9 +144,9 @@ function init() {
     scene.add(cube);
     scene.add(tetra);
     scene.add(octa);
-    
-    
-    
+
+
+
     /** Add shit to the scene */
     scene.add(light);
     scene.add(secondLight);
@@ -221,7 +220,6 @@ function playSong() {
 
 /**
  * set values with input outside of render
- * render will automatically update 
- * 
+ * render will automatically update
+ *
  */
-
