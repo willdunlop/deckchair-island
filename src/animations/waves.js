@@ -1,3 +1,8 @@
+/**
+ * @function animateWater()
+ * @param {Number} - A number for controlling the speed of the waves
+ * WARNING: MORE MATHS ᕙ(⇀‸↼‶)ᕗ
+ */
 export default function Waves(water, wavesOptions, timestamp = 0) {
   //  normal map manipulation
   water.material.uniforms.time.value += 1.0 / 60.0;
