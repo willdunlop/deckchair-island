@@ -8,11 +8,11 @@
  * 2. Apply vertex wave manipulation        -   DONE!!
  * 3. Slip it into the existing project     -   ¯\_(´⊙︿⊙`)_/¯
  */
+ import TWEEN from '@tweenjs/tween.js';
+
 import constants from './config/constants';
+import helpers from './config/helpers';
 
-import TWEEN from '@tweenjs/tween.js';
-
-import Boat from './meshes/boat';
 import Water from './meshes/Water';
 import Shape from './meshes/Shape';
 import AnimateShape from './animations/AnimateShape';
@@ -25,29 +25,25 @@ let container,
   renderer,
   light,
   controls,
-  particles,
   water,
-  count,
-  sphere,
-  cube,
-  tetra,
-  octa,
-  justBegun,
-  tween;
-
+  justBegun;
 
 const { width, height } = constants.screen;
 const { AMOUNTX, AMOUNTY, lightColor, waterColor } = constants;
 
 const wavesOptions = {
   active: true,
-  seperation: -20,
-  waveWidth: 100,
-  waveHeight: 50
+  seperation: -1,
+  waveWidth: 5,
+  waveHeight: 5
 };
 
-init();
-animate(0);
+document.getElementById("songPlay").onclick = () => {
+  init();
+  animate(0);
+}
+
+
 
 function init() {
     /** Create and add renderer to the HTML */
@@ -134,18 +130,14 @@ function init() {
     camera.lookAt( controls.target );
 
     /** Floating shapes */
-    //  generate from an array of shapes in the constants file
-    cube = Shape.cube(constants.cube1.position, constants.cube1.rotation);
-    tetra = Shape.tetrahedron(constants.tetra1.position, constants.tetra1.rotation);
-    octa = Shape.octahedron(constants.octa1.position, constants.octa1.rotation);
-    AnimateShape.float(cube, 2000, scene);
-    AnimateShape.float(tetra, 6500, scene);
-    AnimateShape.float(octa, 7500, scene);
-    scene.add(cube);
-    scene.add(tetra);
-    scene.add(octa);
-
-
+    //  generates from an array of shapes in the constants file
+    constants.shapes.forEach(shapeProperties => {
+      const shape = Shape[shapeProperties.type](shapeProperties.position, shapeProperties.rotation);
+      shape.name = shapeProperties.name; 
+      AnimateShape.float(shape, shapeProperties.animationDelay, scene);
+      scene.add(shape);
+      console.log('shape', shape)
+    });
 
     /** Add shit to the scene */
     scene.add(light);
@@ -157,13 +149,12 @@ function init() {
     stats = new Stats();
     container.appendChild(stats.dom);
 
-    justBegun = new Audio('assets/songs/just-begun.mp3');
-    console.log("it's just beguuuuun, oh what a feeling", justBegun);
-    document.getElementById("songPlay").onclick = playSong
-
+    playSong();
 
     /** Window resize event listener */
     window.addEventListener('resize', onWindowResize, false);
+    window.addEventListener('keydown', e => helpers.control.waveStrength(e.key, wavesOptions));
+
 }
 
 function onWindowResize() {
@@ -172,50 +163,25 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-// function applyTweens(shape) {
-//     var endScale = {x: 175, y: 175, z: 175 };
-//     var endTranslation = {x: shape.position.x, y: shape.position.y, z: 3000};
-//     shape.animation.scale = new AnimateShape(shape, endScale, 1000, 2000).scale();
-//     shape.animation.translate = new AnimateShape(shape, endTranslation, 3000, 3000).translation();
-//     shape.animation.scale.start();
-//     shape.animation.translate.start();
-// }
-
-function shapeAnimationTiming() {
-//   window.setTimeout(() => {
-    // AnimateShape(cube, tween);
-//   }, 2000);
-//   window.setTimeout(() => {
-//     scene.add(tetra);
-//     AnimateShape(tetra);
-//   }, 6500);
-//   window.setTimeout(() => {
-//     scene.add(octa);
-//     AnimateShape(octa);
-//   }, 7500);
-
-}
-
 function animate(timestamp) {
-  setTimeout(() => {
-    requestAnimationFrame(animate);
-    render(timestamp);
-    stats.update();
-  }, 1000/60);
+  requestAnimationFrame(animate);
+  render(timestamp);
+  stats.update();
 }
 
 function render(timestamp) {
     water.material.uniforms.time.value += 1.0 / 60.0;
     TWEEN.update();
 
-    // Waves(water, wavesOptions, timestamp)
+    Waves(water, wavesOptions, timestamp)
 
   renderer.render(scene, camera);
 }
 
 function playSong() {
   console.log("playSong was called");
-  justBegun.play();
+  justBegun = new Audio('assets/songs/just-begun.mp3');
+  // justBegun.play();
 }
 
 /**

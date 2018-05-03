@@ -11,18 +11,37 @@ export default Object.freeze({
   nums: [45, 90, 135, 180, 225, 270, 315, 360],
 
   //  Shapes
-  cube1: {
-    position: { x: -500, y: 200, z: -3000 },
-    rotation: {x: 45, y: 45, z: 0 }
-  },
+  shapes: [
+    {
+      name: 'cube1',
+      type: 'cube',
+      animationDelay: 2000,
+      position: { x: -500, y: 200, z: -3000 },
+      rotation: {x: 45, y: 45, z: 0 }
+    },
 
-  tetra1: {
-    position: { x: 300, y: 150, z: -3000 },
-    rotation: {x: 45, y: 45, z: 45 }
-  },
+    {
+      name: 'tetra1',
+      type: 'tetrahedron',
+      animationDelay: 6500,
+      position: { x: 300, y: 150, z: -3000 },
+      rotation: {x: 45, y: 45, z: 45 }
+    },
 
-  octa1: {
-    position: { x: -750, y: 600, z: -5000 },
-    rotation: {x: 0, y: 0, z: 0 }
-  },
+    {
+      name: 'octa1',
+      type: 'octahedron',
+      animationDelay: 7500,
+      position: { x: -750, y: 600, z: -5000 },
+      rotation: {x: 0, y: 0, z: 0 }
+    },
+
+    {
+      name: 'billboard1',
+      type: 'billboard',
+      animationDelay: 1000,
+      position: { x: -750, y: 600, z: -5000 },
+      rotation: { x: 0, y: 0, z: 0 }
+    }
+  ]
 })

@@ -4,3 +4,7 @@
   top: 5%;
   left: 50%;
 }
+
+body {
+overflow: hidden;
+}

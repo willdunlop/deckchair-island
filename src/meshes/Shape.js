@@ -4,12 +4,9 @@ import constants from './../config/constants';
 const Shape = {
 
   cube: (position, rotation) => {
-    const { nums } = constants;
-    const cube = new THREE.Mesh();
-
     const cubeGeo = new THREE.BoxGeometry(1, 1, 1);
     const cubeMat = Shape.generateMat();
-    cube.add(new THREE.Mesh(cubeGeo, cubeMat));
+    const cube = new THREE.Mesh(cubeGeo, cubeMat);
 
     cube.position.set(position.x, position.y, position.z);
     cube.rotation.set(rotation.x, rotation.y, rotation.z);
@@ -59,17 +56,23 @@ const Shape = {
     billboardBody.name = "billboardBody";
     billboard.add(billboardBody);
 
-    const lightGeo = new THREE.BoxGeometry(.5, .5, .5)
-    const lightMat = new THREE.MeshPhongMaterial({ color: 0xffdb3d, emissive: 0xffdb3d});
-    const light = new THREE.Mesh(lightGeo, lightMat);
-    light.name = "light";
-    light.position.set(-2.5, 1.5, 0.5)
-    billboard.add(light);
+    // const lightGeo = new THREE.BoxGeometry(.5, .5, .5)
+    // const lightMat = new THREE.MeshPhongMaterial({ color: 0xffdb3d, emissive: 0xffdb3d});
+    // const light = new THREE.Mesh(lightGeo, lightMat);
+    // light.name = "light";
+    // light.position.set(-2.5, 1.5, 0.5)
+    // billboard.add(light);
+
+    billboard.animation = {}
 
     return billboard;
   },
 
   custom: () => {
+
+  },
+
+  generateShapes: () => {
 
   },
 
