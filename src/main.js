@@ -26,6 +26,7 @@ let container,
   light,
   controls,
   water,
+  video,
   justBegun;
 
 const { width, height } = constants.screen;
@@ -48,6 +49,7 @@ document.getElementById("songPlay").onclick = () => {
 function init() {
     /** Create and add renderer to the HTML */
     container = document.getElementById('container');
+    playVideo();
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -133,7 +135,7 @@ function init() {
     //  generates from an array of shapes in the constants file
     constants.shapes.forEach(shapeProperties => {
       const shape = Shape[shapeProperties.type](shapeProperties.position, shapeProperties.rotation);
-      shape.name = shapeProperties.name; 
+      shape.name = shapeProperties.name;
       AnimateShape.float(shape, shapeProperties.animationDelay, scene);
       scene.add(shape);
       console.log('shape', shape)
@@ -149,8 +151,7 @@ function init() {
     stats = new Stats();
     container.appendChild(stats.dom);
 
-    playSong();
-
+    // playSong();
     /** Window resize event listener */
     window.addEventListener('resize', onWindowResize, false);
     window.addEventListener('keydown', e => helpers.control.waveStrength(e.key, wavesOptions));
@@ -182,6 +183,15 @@ function playSong() {
   console.log("playSong was called");
   justBegun = new Audio('assets/songs/just-begun.mp3');
   // justBegun.play();
+}
+
+function playVideo() {
+  video = document.createElement('video');
+  video.id='video';
+  video.src = 'assets/songs/just-begun.mp4';
+  document.getElementById('video-container').appendChild(video);
+  video.load();
+  video.play();
 }
 
 /**

@@ -24,7 +24,7 @@ export default Object.freeze({
       name: 'tetra1',
       type: 'tetrahedron',
       animationDelay: 6500,
-      position: { x: 300, y: 150, z: -3000 },
+      position: { x: 450, y: 150, z: -3000 },
       rotation: {x: 45, y: 45, z: 45 }
     },
 
@@ -40,7 +40,7 @@ export default Object.freeze({
       name: 'billboard1',
       type: 'billboard',
       animationDelay: 1000,
-      position: { x: -750, y: 600, z: -5000 },
+      position: { x: 400, y: 550, z: -5000 },
       rotation: { x: 0, y: 0, z: 0 }
     }
   ]

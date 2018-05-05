@@ -47,14 +47,30 @@ const Shape = {
     return octa;
   },
 
-  billboard: () => {
+  billboard: (position, rotation) => {
     const billboard = new THREE.Mesh();
 
-    const billGeo = new THREE.BoxGeometry(6, 4, 1);
+    const billGeo = new THREE.BoxGeometry(3, 2, .5);
     const billMat = new THREE.MeshPhongMaterial({ color: 0x333333, reflectivity: 1});
     const billboardBody = new THREE.Mesh(billGeo, billMat)
     billboardBody.name = "billboardBody";
     billboard.add(billboardBody);
+
+    const video = document.getElementById('video');
+    const screenGeo = new THREE.PlaneGeometry(2.8, 1.8);
+    const screenVideoMat = new THREE.VideoTexture(video);
+
+    const screenMat = new THREE.MeshPhongMaterial({ map: screenVideoMat })
+    screenMat.minFilter = THREE.LinearFilter;
+    screenMat.magFilter = THREE.LinearFilter;
+    screenMat.format = THREE.RGBFormat;
+
+    const billboardScreen = new THREE.Mesh(screenGeo, screenMat);
+    billboardScreen.name = "billboardScreen";
+    billboardScreen.position.set(0, 0, .55);
+    billboard.add(billboardScreen);
+
+    // const screenLight = new THREE.PointLight
 
     // const lightGeo = new THREE.BoxGeometry(.5, .5, .5)
     // const lightMat = new THREE.MeshPhongMaterial({ color: 0xffdb3d, emissive: 0xffdb3d});
@@ -63,6 +79,8 @@ const Shape = {
     // light.position.set(-2.5, 1.5, 0.5)
     // billboard.add(light);
 
+    billboard.position.set(position.x, position.y, position.z);
+    billboard.rotation.set(rotation.x, rotation.y, rotation.z);
     billboard.animation = {}
 
     return billboard;
