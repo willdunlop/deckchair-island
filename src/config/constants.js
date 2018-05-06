@@ -39,9 +39,9 @@ export default Object.freeze({
     {
       name: 'billboard1',
       type: 'billboard',
-      animationDelay: 1000,
-      position: { x: 400, y: 550, z: -5000 },
-      rotation: { x: 0, y: 0, z: 0 }
+      animationDelay: 13000,
+      position: { x: 800, y: 600, z: -5000 },
+      rotation: { x: 0, y: 6, z: 0 }
     }
   ]
 })

@@ -27,6 +27,7 @@ let container,
   controls,
   water,
   video,
+  isPlaying,
   justBegun;
 
 const { width, height } = constants.screen;
@@ -39,9 +40,11 @@ const wavesOptions = {
   waveHeight: 5
 };
 
+let timestamp = 0, pausedTimestamp = 0, delta = 0, timeCaptured = false;
+
 document.getElementById("songPlay").onclick = () => {
   init();
-  animate(0);
+  animate(timestamp);
 }
 
 
@@ -50,6 +53,8 @@ function init() {
     /** Create and add renderer to the HTML */
     container = document.getElementById('container');
     playVideo();
+    document.getElementById("playPause").onclick = () => playPause();
+
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -72,6 +77,8 @@ function init() {
 
     const thirdLight = new THREE.DirectionalLight(0xffdddd, 0.2);
     thirdLight.position.set(0,-20,0);
+
+    const ambientLight = new THREE.AmbientLight(0xffdddd, 0.2);
 
     /** Water */
     water = Water(lightPosition);
@@ -127,6 +134,7 @@ function init() {
     controls = new THREE.OrbitControls( camera, renderer.domElement );
     controls.target.set( 0, 150, 0 );
     controls.panningMode = THREE.HorizontalPanning;
+    // controls.maxAzimuthAngle = Math.PI / 2;
     controls.minDistance = 40.0;
     controls.maxDistance = 20000.0;
     camera.lookAt( controls.target );
@@ -138,13 +146,13 @@ function init() {
       shape.name = shapeProperties.name;
       AnimateShape.float(shape, shapeProperties.animationDelay, scene);
       scene.add(shape);
-      console.log('shape', shape)
     });
 
     /** Add shit to the scene */
     scene.add(light);
     scene.add(secondLight);
-    scene.add(thirdLight);
+    // scene.add(thirdLight);
+    scene.add(ambientLight)
     scene.add(water);
     scene.add(sky);
 
@@ -155,6 +163,7 @@ function init() {
     /** Window resize event listener */
     window.addEventListener('resize', onWindowResize, false);
     window.addEventListener('keydown', e => helpers.control.waveStrength(e.key, wavesOptions));
+
 
 }
 
@@ -171,29 +180,47 @@ function animate(timestamp) {
 }
 
 function render(timestamp) {
-    water.material.uniforms.time.value += 1.0 / 60.0;
-    TWEEN.update();
-
-    Waves(water, wavesOptions, timestamp)
-
+  tweenControl(timestamp);
+  water.material.uniforms.time.value += 1.0 / 60.0;
+  Waves(water, wavesOptions, timestamp)
   renderer.render(scene, camera);
-}
-
-function playSong() {
-  console.log("playSong was called");
-  justBegun = new Audio('assets/songs/just-begun.mp3');
-  // justBegun.play();
 }
 
 function playVideo() {
   video = document.createElement('video');
-  video.id='video';
+  video.id = 'video';
   video.src = 'assets/songs/just-begun.mp4';
   document.getElementById('video-container').appendChild(video);
   video.load();
   video.play();
+  isPlaying = true;
 }
 
+function playPause() {
+  if (isPlaying) {
+    console.log('TWEEN', TWEEN)
+    isPlaying = false;
+    video.pause();
+  } else {
+    isPlaying = true;
+    video.play();
+  }
+}
+
+function tweenControl(timestamp) {
+  if(!isPlaying){
+   if(!timeCaptured) {
+     pausedTimestamp = timestamp;
+     timeCaptured = true;
+   }
+ } else {
+   if(timeCaptured){
+     delta += (timestamp - pausedTimestamp);
+     timeCaptured = false;
+   }
+   TWEEN.update(timestamp - delta);
+ }
+}
 /**
  * set values with input outside of render
  * render will automatically update

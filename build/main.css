@@ -5,6 +5,13 @@
   left: 50%;
 }
 
+.button2 {
+  position: absolute;
+  z-index: 3;
+  top: 10%;
+  left: 50%;
+}
+
 body {
 overflow: hidden;
 }
