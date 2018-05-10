@@ -8,7 +8,7 @@
  * 2. Apply vertex wave manipulation        -   DONE!!
  * 3. Slip it into the existing project     -   ¯\_(´⊙︿⊙`)_/¯
  */
- import TWEEN from '@tweenjs/tween.js';
+import TWEEN from '@tweenjs/tween.js';
 
 import constants from './config/constants';
 import helpers from './config/helpers';
@@ -52,7 +52,7 @@ document.getElementById("songPlay").onclick = () => {
 function init() {
     /** Create and add renderer to the HTML */
     container = document.getElementById('container');
-    playVideo();
+    initVideo();
     document.getElementById("playPause").onclick = () => playPause();
 
 
@@ -82,7 +82,8 @@ function init() {
 
     /** Water */
     water = Water(lightPosition);
-    water.rotation.x = - Math.PI / 2;   // ytho?
+    water.rotation.x = - Math.PI / 2;
+    water.rotation.z = 180;
 
     /** Sky */
     const sky = new THREE.Sky();
@@ -98,7 +99,7 @@ function init() {
 
     const parameters = {
         distance: 400,
-        inclination: 0.47,
+        inclination: 0.49,
         azimuth: 0.250
     };
 
@@ -159,7 +160,6 @@ function init() {
     stats = new Stats();
     container.appendChild(stats.dom);
 
-    // playSong();
     /** Window resize event listener */
     window.addEventListener('resize', onWindowResize, false);
     window.addEventListener('keydown', e => helpers.control.waveStrength(e.key, wavesOptions));
@@ -186,7 +186,7 @@ function render(timestamp) {
   renderer.render(scene, camera);
 }
 
-function playVideo() {
+function initVideo() {
   video = document.createElement('video');
   video.id = 'video';
   video.src = 'assets/songs/just-begun.mp4';
@@ -198,7 +198,6 @@ function playVideo() {
 
 function playPause() {
   if (isPlaying) {
-    console.log('TWEEN', TWEEN)
     isPlaying = false;
     video.pause();
   } else {
@@ -207,22 +206,18 @@ function playPause() {
   }
 }
 
+
 function tweenControl(timestamp) {
   if(!isPlaying){
-   if(!timeCaptured) {
-     pausedTimestamp = timestamp;
-     timeCaptured = true;
-   }
- } else {
-   if(timeCaptured){
-     delta += (timestamp - pausedTimestamp);
-     timeCaptured = false;
-   }
-   TWEEN.update(timestamp - delta);
- }
+    if(!timeCaptured) {
+      pausedTimestamp = timestamp;
+      timeCaptured = true;
+    }
+  } else {
+    if(timeCaptured){
+      delta += (timestamp - pausedTimestamp);
+      timeCaptured = false;
+    }
+    TWEEN.update(timestamp - delta);
+  }
 }
-/**
- * set values with input outside of render
- * render will automatically update
- *
- */

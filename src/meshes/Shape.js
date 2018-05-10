@@ -47,6 +47,14 @@ const Shape = {
     return octa;
   },
 
+  /**
+  * @function billboard()
+  * @param: {Object} position - An object containing x, y and z values for the
+  *         biillboards starting position.
+  * @param: {Object} rotation - Object containing x, y and z values for the
+  *         billboards starting rotation values
+  * Used to generate a billboard that plays a video, to be used in the scene.
+  */
   billboard: (position, rotation) => {
     const billboard = new THREE.Mesh();
 
@@ -85,6 +93,10 @@ const Shape = {
 
   },
 
+  /**
+  * @function generatMat()
+  * Will generate a material with a random color and reflectivity value
+  */
   generateMat: () => {
     const colors = [0xffffff, 0xffff00, 0xff00ff, 0xff0000, 0x00ffff, 0xaa00ff, 0x000000];
     const mat = new THREE.MeshPhongMaterial({
@@ -95,12 +107,13 @@ const Shape = {
     return mat;
   },
 
-  generateNum: (max) => {
-    // returns a random whole number that is < max
-    let number = Math.floor(Math.random() * Math.floor(max));
-
-    return number;
-  }
+  /**
+  * @function: generateNum()
+  * @param: {Number} max - The max number to be generated.
+  * This function simply spits out a random number between
+  * 0 and max
+  */
+  generateNum: max =>  Math.floor(Math.random() * Math.floor(max))
 }
 
 
