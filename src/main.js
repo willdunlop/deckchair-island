@@ -1,4 +1,4 @@
-/**
+ /**
  * Three.js code for InfiniOcean
  * Trial run for attempting to "re-build" the ocean scene
  *
@@ -13,10 +13,13 @@ import TWEEN from '@tweenjs/tween.js';
 import constants from './config/constants';
 import helpers from './config/helpers';
 
+import Island from './meshes/Island';
 import Water from './meshes/Water';
 import Shape from './meshes/Shape';
 import AnimateShape from './animations/AnimateShape';
 import Waves from './animations/waves';
+
+import './ui/index.js';
 
 let container,
   stats,
@@ -27,8 +30,7 @@ let container,
   controls,
   water,
   video,
-  isPlaying,
-  justBegun;
+  isPlaying;
 
 const { width, height } = constants.screen;
 const { AMOUNTX, AMOUNTY, lightColor, waterColor } = constants;
@@ -47,11 +49,13 @@ document.getElementById("songPlay").onclick = () => {
   animate(timestamp);
 }
 
+const Experience = {
 
+}
 
 function init() {
     /** Create and add renderer to the HTML */
-    container = document.getElementById('container');
+    container = document.getElementById('experience-container');
     initVideo();
     document.getElementById("playPause").onclick = () => playPause();
 
@@ -74,9 +78,6 @@ function init() {
 
     const secondLight = new THREE.DirectionalLight(0xffdddd, 0.4);
     secondLight.position.set(-50,10,100);
-
-    const thirdLight = new THREE.DirectionalLight(0xffdddd, 0.2);
-    thirdLight.position.set(0,-20,0);
 
     const ambientLight = new THREE.AmbientLight(0xffdddd, 0.2);
 
@@ -149,10 +150,12 @@ function init() {
       scene.add(shape);
     });
 
+    const island = Island();
+    scene.add(island);
+
     /** Add shit to the scene */
     scene.add(light);
     scene.add(secondLight);
-    // scene.add(thirdLight);
     scene.add(ambientLight)
     scene.add(water);
     scene.add(sky);

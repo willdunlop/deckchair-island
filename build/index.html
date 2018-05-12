@@ -2,28 +2,35 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title𝕕𝕖𝕔𝕜𝕔𝕙𝕒𝕚𝕣 ~ 𝕚𝕤𝕝𝕒𝕟𝕕</title>
+    <title>𝕕 𝕖 𝕔 𝕜 𝕔 𝕙 𝕒 𝕚 𝕣  ~  𝕚 𝕤 𝕝 𝕒 𝕟 𝕕</title>
 
     <link rel="stylesheet" href="main.css"></link>
 
+
+    <script src="assets/vendor/three.js"></script>
+    <script src="assets/vendor/libs/stats.min.js"></script>
+
+    <script src="assets/vendor/controls/DeviceOrientationControls.js"></script>
+    <script src="assets/vendor/controls/OrbitControls.js"></script>
+    <script src="assets/vendor/shaders/Sky.js"></script>
+    <script src="assets/vendor/shaders/Water.js"></script>
+
+
   </head>
+
   <body style="margin: 0">
-      <div id="container"></div>
+      <!-- container for the 3D experience -->
+      <div id="experience-container"></div>
+      <!-- container for the react ui -->
+      <div id="ui-container"></div>
+
+      <!-- temp shit, proper ui under construction -->
       <button id="songPlay" class="button">Play</button>
       <button id="playPause" class="button2">Play/Pause</button>
 
-
-      <script src="assets/vendor/three.js"></script>
-      <!-- <script src="assets/vendor/tween.js"></script> -->
-      <script src="assets/vendor/libs/stats.min.js"></script>
-
-      <script src="assets/vendor/controls/DeviceOrientationControls.js"></script>
-      <script src="assets/vendor/controls/OrbitControls.js"></script>
-      <script src="assets/vendor/shaders/Sky.js"></script>
-      <script src="assets/vendor/shaders/Water.js"></script>
-
       <script type="text/javascript" src="/main.min.js"></script>
 
+      <!-- container for the scene videos to load into -->
       <div id="video-container"></div>
 
     </body>
